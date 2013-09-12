@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  skip_before_filter :verify_authenticity_token
 
   # GET /posts
   # GET /posts.json
@@ -43,7 +44,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render action: 'show', status: :ok, location: @post }
       else
         format.html { render action: 'edit' }
         format.json { render json: @post.errors, status: :unprocessable_entity }
